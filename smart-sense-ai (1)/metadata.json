@@ -1,0 +1,7 @@
+{
+  "name": "Smart Sense AI",
+  "description": "Smart Sense AI is an AI-powered multi-utility platform that helps users with generating smart excuses, learning any subject, generating medical descriptions, and improving productivity.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
