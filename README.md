@@ -26,14 +26,17 @@ Helps increase health awareness using easy language
 React.js + TypeScript
 TailwindCSS
 Framer Motion animations
+
 >>🤖Backend
 FastAPI (Python)
 Async request handling
 REST API integration
+
 >>🤖AI Engine
 Google Gemini 1.5 Pro
 Advanced prompt engineering
 Tone-controlled output generation
+
 >>🤖Deployment
 Vercel
 GitHub CI/CD
