@@ -85,9 +85,15 @@ VITE_GEMINI_API_KEY=your_api_key_here
 4️⃣ Run the development server
 npm run dev
 🖼️ Screenshots
-
-(Add screenshots of UI like Splash Screen, Sidebar, Generators, Learning Hub, etc.)
-
+<img width="1813" height="832" alt="image" src="https://github.com/user-attachments/assets/e5472563-144d-4ad9-a8c9-cb8157d3c9a9" />
+<img width="1897" height="868" alt="image" src="https://github.com/user-attachments/assets/a4494809-9d42-43ee-aff5-f7a7a22d8462" />
+<img width="1869" height="869" alt="image" src="https://github.com/user-attachments/assets/75113902-f6c0-4d5f-ae99-ff0da14e94f7" />
+<img width="1865" height="880" alt="image" src="https://github.com/user-attachments/assets/c2965bcc-37df-4d87-8bc2-2d0edae977a9" />
+<img width="1879" height="874" alt="image" src="https://github.com/user-attachments/assets/1fb7472c-de11-456e-b4b6-758abf0287be" />
+<img width="1871" height="872" alt="image" src="https://github.com/user-attachments/assets/688fd675-2d50-403e-8538-a1ddbc16f05d" />
+<img width="1880" height="877" alt="image" src="https://github.com/user-attachments/assets/8b896014-eac9-4087-aebe-949697f2303e" />
+<img width="725" height="680" alt="image" src="https://github.com/user-attachments/assets/adbc75ca-ff1f-4e3f-956c-4e55aacc09d6" />
+    
 🚀 Future Enhancements
 ✨ Emotion detection
 ✉️ Direct Gmail integration
