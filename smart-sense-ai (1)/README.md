@@ -76,27 +76,6 @@ smart-sense-ai/
 ├── README.md
 └── .env
 
-⚙️ Installation & Setup
-1️⃣ Clone the repository
-git clone https://github.com/your-username/smart-sense-ai.git
-cd smart-sense-ai
-
-2️⃣ Install dependencies
-npm install
-
-3️⃣ Add your Gemini API Key
-
-Create a .env file:
-
-VITE_GEMINI_API_KEY=your_api_key_here
-
-4️⃣ Run the development server
-npm run dev
-
-🖼️ Screenshots
-
-(Add screenshots of UI like Splash Screen, Sidebar, Generators, Learning Hub, etc.)
-
 🚀 Future Enhancements
 
 ✨ Emotion detection
