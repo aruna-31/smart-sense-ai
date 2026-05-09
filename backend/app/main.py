@@ -37,14 +37,6 @@ app.include_router(router, prefix="/api")
 from .routes.generate import router as generate_router
 app.include_router(generate_router, prefix="/api")
 
-# Billing routes
-from .routes.billing import router as billing_router
-app.include_router(billing_router, prefix="/api")
-
 # Activity history
 from .routes.history import router as history_router
 app.include_router(history_router, prefix="/api")
-
-# Billing upload route (for QR image uploads)
-from .routes.billing_upload import router as billing_upload_router
-app.include_router(billing_upload_router, prefix="/api")
