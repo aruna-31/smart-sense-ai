@@ -6,7 +6,16 @@ export default {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
+      },
+      colors: {
+        'brand-purple': '#7B2FF7',
+        'brand-pink': '#F107A3',
+      },
+    },
   },
   plugins: [],
 }
