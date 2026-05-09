@@ -1,10 +1,31 @@
 from dotenv import load_dotenv
 load_dotenv()
 
+import os
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from .routes.chat import router
 
 app = FastAPI()
+
+# ── CORS ──────────────────────────────────────────────────────────────────────
+# Allow the frontend origin(s) to call this backend.
+# FRONTEND_URL env-var is set in Render to the deployed frontend URL.
+# Falls back to localhost for local development.
+_frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        _frontend_url,
+        "https://smart-sense-ai-frontend.onrender.com",
+        "http://localhost:3000",
+        "http://localhost:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 async def root():
