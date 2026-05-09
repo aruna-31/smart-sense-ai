@@ -100,6 +100,14 @@ export const Chatbot: React.FC = () => {
         throw new Error(`Backend error ${res.status}: ${errText}`);
       }
 
+      const contentType = res.headers.get('Content-Type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error(
+          'Backend returned an unexpected response (not JSON). ' +
+          'Please check that VITE_BACKEND_URL is correctly set in your Render environment variables.'
+        );
+      }
+
       const data = await res.json();
 
       const modelMessage: ChatMessage = {
