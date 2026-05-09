@@ -31,6 +31,13 @@ async function callBackendGeneratePayload(payload: any) {
         const text = await resp.text();
         throw new Error(`Backend generate error ${resp.status}: ${text}`);
     }
+
+    const contentType = resp.headers.get('Content-Type');
+    if (!contentType || !contentType.includes('application/json')) {
+        const text = await resp.text();
+        throw new Error(`Expected JSON but got ${contentType || 'plain text'}. Backend might be misconfigured or down.`);
+    }
+
     return await resp.json();
 }
 
