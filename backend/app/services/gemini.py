@@ -58,8 +58,12 @@ def _sync_generate_text(prompt: str, model: str | None = None, max_tokens: int =
 
     # Build attempt list — honour env override / caller preference first
     preferred_model = model or os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
-    attempts = [(v, preferred_model)] + [
-        (v, m) for v, m in _MODELS_TO_TRY if m != preferred_model
+    # Find which api_version goes with the preferred model, default to v1beta
+    preferred_version = next(
+        (ver for ver, m in _MODELS_TO_TRY if m == preferred_model), "v1beta"
+    )
+    attempts = [(preferred_version, preferred_model)] + [
+        (ver, m) for ver, m in _MODELS_TO_TRY if m != preferred_model
     ]
 
     last_error = None
