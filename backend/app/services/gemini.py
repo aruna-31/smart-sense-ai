@@ -8,10 +8,11 @@ logger = logging.getLogger(__name__)
 # Models to try in order — tries v1beta first (newer), then v1 (stable)
 _MODELS_TO_TRY = [
     ("v1beta", "gemini-2.0-flash"),
-    ("v1beta", "gemini-2.0-flash-exp"),
+    ("v1beta", "gemini-2.0-flash-lite"),
     ("v1",     "gemini-1.5-flash"),
     ("v1",     "gemini-1.5-flash-latest"),
-    ("v1",     "gemini-pro"),
+    ("v1",     "gemini-1.5-flash-8b"),
+    ("v1",     "gemini-1.5-pro"),
 ]
 
 BASE_URL = "https://generativelanguage.googleapis.com"
@@ -78,9 +79,6 @@ def _sync_generate_text(prompt: str, model: str | None = None, max_tokens: int =
             status = exc.response.status_code
             logger.warning("%s/%s → HTTP %s: %s", api_version, model_name, status, exc.response.text[:200])
             last_error = exc
-            if status in (400, 403):
-                # Key / permission issue — no point retrying same key with other models
-                break
             continue
         except Exception as exc:
             logger.warning("%s/%s → %s", api_version, model_name, exc)
