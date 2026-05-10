@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { AnimatedPage } from './AnimatedPage';
-import { generateLearningRoadmap } from '../services/geminiService';
+import { generateLearningRoadmap } from '../services/aiService';
 import { saveActivity } from '../services/historyService';
 import { SparklesIcon, ExportIcon, MicIcon } from './icons';
 import { useSpeechRecognition } from '../hooks/useSpeechRecognition';
@@ -134,3 +134,4 @@ export const LearningHub: React.FC = () => {
     </AnimatedPage>
   );
 };
+

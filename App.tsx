@@ -14,7 +14,7 @@ export type Page = 'smart-excuse-generator' | 'learning-hub' | 'medical-generato
 
 const App: React.FC = () => {
   const [isShowingSplash, setIsShowingSplash] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated] = useState(true); // Always authenticated for local demo
   const [activePage, setActivePage] = useState<Page>('smart-excuse-generator');
   
   useEffect(() => {

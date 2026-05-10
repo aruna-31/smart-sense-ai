@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { AnimatedPage } from './AnimatedPage';
-import { translateText, textToSpeech } from '../services/geminiService';
+import { translateText, textToSpeech } from '../services/aiService';
 import { MicIcon, VolumeUpIcon, SparklesIcon } from './icons';
 import { useSpeechRecognition } from '../hooks/useSpeechRecognition';
 import { Language, languageCodeMap } from '../types';
@@ -120,3 +120,4 @@ export const VoiceTranslator: React.FC = () => {
         </AnimatedPage>
     );
 };
+

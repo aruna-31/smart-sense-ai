@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AnimatedPage } from './AnimatedPage';
-import { summarizeText } from '../services/geminiService';
+import { summarizeText } from '../services/aiService';
 import { SparklesIcon } from './icons';
 
 type SummaryLength = 'Short' | 'Medium' | 'Detailed';
@@ -101,3 +101,4 @@ export const ProductivitySuite: React.FC = () => {
     </AnimatedPage>
   );
 };
+

@@ -13,8 +13,9 @@ const ChatIcon = () => <span>💬</span>;
 const CloseIcon = () => <span>✖</span>;
 const SendIcon = () => <span>➤</span>;
 
-// ✅ BACKEND URL (MUST BE SET IN .env)
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+// Local backend — always localhost for this demo project
+const BACKEND_URL = 'http://localhost:8001';
+
 
 export const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);

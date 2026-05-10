@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { AnimatedPage } from './AnimatedPage';
-import { generateMedicalInfo } from '../services/geminiService';
+import { generateMedicalInfo } from '../services/aiService';
 import { SparklesIcon, ExportIcon, MicIcon } from './icons';
 import { BillingModal } from './BillingModal';
 import { useSpeechRecognition } from '../hooks/useSpeechRecognition';
@@ -172,3 +172,4 @@ export const MedicalGenerator: React.FC = () => {
     </AnimatedPage>
   );
 };
+

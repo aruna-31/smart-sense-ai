@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { generateExcuse, textToSpeech, generateApology, generateEmail, generateLetter } from '../services/geminiService';
+import { generateExcuse, textToSpeech, generateApology, generateEmail, generateLetter } from '../services/aiService';
 import { saveActivity } from '../services/historyService';
 import { AnimatedPage } from './AnimatedPage';
 import { ExcuseMode, ApologyTone, EmailTone, LetterTone, WriterTool } from '../types';
@@ -306,3 +306,4 @@ export const SmartExcuseGenerator: React.FC = () => {
         </AnimatedPage>
     );
 };
+
