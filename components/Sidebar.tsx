@@ -12,10 +12,9 @@ interface SidebarProps {
 
 const navItems = [
   { id: 'smart-excuse-generator', name: 'SMART Excuse Gen', icon: <WriterIcon /> },
-  { id: 'learning-hub', name: 'Learning Hub', icon: <StudyIcon /> },
-  { id: 'medical-generator', name: 'Medical Generator', icon: <MedicalIcon /> },
-  { id: 'voice-translator', name: 'Voice Translator', icon: <TranslateIcon /> },
-  { id: 'billing', name: 'Billing', icon: <span>💳</span> },
+  { id: 'learning-hub',           name: 'Learning Hub',      icon: <StudyIcon /> },
+  { id: 'medical-generator',      name: 'Medical Generator', icon: <MedicalIcon /> },
+  { id: 'voice-translator',       name: 'Voice Translator',  icon: <TranslateIcon /> },
 ];
 
 export const Sidebar: React.FC<SidebarProps> = ({ activePage, setActivePage, onLogout }) => {

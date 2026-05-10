@@ -6,12 +6,11 @@ import { SmartExcuseGenerator } from './components/ExcuseGenerator';
 import { LearningHub } from './components/LearningHub';
 import { MedicalGenerator } from './components/MedicalGenerator';
 import { VoiceTranslator } from './components/VoiceTranslator';
-import { BillingPage } from './components/BillingPage';
 import { Chatbot } from './components/Chatbot';
 import { Auth } from './components/Auth';
 import { SplashScreen } from './components/SplashScreen';
 
-export type Page = 'smart-excuse-generator' | 'learning-hub' | 'medical-generator' | 'voice-translator' | 'billing';
+export type Page = 'smart-excuse-generator' | 'learning-hub' | 'medical-generator' | 'voice-translator';
 
 const App: React.FC = () => {
   const [isShowingSplash, setIsShowingSplash] = useState(true);
@@ -19,7 +18,7 @@ const App: React.FC = () => {
   const [activePage, setActivePage] = useState<Page>('smart-excuse-generator');
   
   useEffect(() => {
-    const timer = setTimeout(() => setIsShowingSplash(false), 3000); // Splash screen for 3 seconds
+    const timer = setTimeout(() => setIsShowingSplash(false), 3000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -33,8 +32,6 @@ const App: React.FC = () => {
         return <MedicalGenerator key="medical-generator" />;
       case 'voice-translator':
         return <VoiceTranslator key="voice-translator" />;
-      case 'billing':
-        return <BillingPage key="billing" />;
       default:
         return <SmartExcuseGenerator key="smart-excuse-generator" />;
     }

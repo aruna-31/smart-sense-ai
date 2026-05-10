@@ -3,6 +3,5 @@ uvicorn[standard]>=0.20.0
 python-dotenv>=1.0.0
 httpx>=0.24.0
 pydantic>=1.10.0
-stripe>=5.0.0
 sqlmodel>=0.0.8
-google-generativeai>=0.8.0
+google-genai>=1.0.0

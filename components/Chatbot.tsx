@@ -1,6 +1,5 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { BillingModal } from './BillingModal';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Types
@@ -22,8 +21,7 @@ export const Chatbot: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [subscribeInfo, setSubscribeInfo] = useState<null | { subscribe_url?: string; amount?: number; currency?: string; message?: string }>(null);
-  const [billingOpen, setBillingOpen] = useState(false);
+  const [subscribeInfo, setSubscribeInfo] = useState<null | { message?: string }>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -192,14 +190,11 @@ export const Chatbot: React.FC = () => {
 
               <div ref={messagesEndRef} />
 
-              {/* Small subscribe hint */}
               {subscribeInfo && (
                 <div className="p-3">
                   <div className="bg-yellow-900/80 border border-yellow-700 p-3 rounded-lg text-yellow-100 text-sm flex justify-between items-center">
-                    <div>{subscribeInfo.message ?? 'Subscription required to continue.'}</div>
-                    <div className="flex gap-2">
-                      <button className="px-3 py-1 bg-purple-700 rounded" onClick={() => setBillingOpen(true)}>Subscribe</button>
-                    </div>
+                    <div>{subscribeInfo.message ?? 'You have reached the request limit.'}</div>
+                    <button className="px-3 py-1 bg-gray-700 rounded" onClick={() => setSubscribeInfo(null)}>Dismiss</button>
                   </div>
                 </div>
               )}
@@ -224,43 +219,11 @@ export const Chatbot: React.FC = () => {
               </button>
             </div>
 
-            {/* Subscribe modal (simple) */}
-            {subscribeInfo && (
-              <div className="p-4">
-                <div className="bg-yellow-900/80 border border-yellow-700 p-3 rounded-lg text-yellow-100">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <div className="font-semibold">Subscription required</div>
-                      <div className="text-sm">{subscribeInfo.message ?? `Subscribe for ${subscribeInfo.amount} ${subscribeInfo.currency} / ${subscribeInfo.message}`}</div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => {
-                          const url = subscribeInfo.subscribe_url || subscribeInfo.subscribe_url;
-                          const openUrl = url && url.startsWith('/') ? `${BACKEND_URL}${url}` : url;
-                          if (openUrl) window.open(openUrl, '_blank');
-                        }}
-                        className="bg-green-600 px-3 py-1 rounded-md text-white"
-                      >
-                        Subscribe
-                      </button>
-                      <button
-                        onClick={() => setSubscribeInfo(null)}
-                        className="px-3 py-1 rounded-md text-gray-300"
-                      >
-                        Dismiss
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
           </motion.div>
+
         )}
       </AnimatePresence>
 
-      <BillingModal open={billingOpen} onClose={() => setBillingOpen(false)} subscribeInfo={subscribeInfo} userId={localStorage.getItem('user-id') || null} />
     </>
   );
 };
