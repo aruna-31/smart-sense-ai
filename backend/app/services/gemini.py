@@ -1,64 +1,90 @@
 import os
 import logging
 import asyncio
-
-try:
-    from google import genai
-    _HAVE_GENAI = True
-except Exception:
-    _HAVE_GENAI = False
+import httpx
 
 logger = logging.getLogger(__name__)
 
-# Models to try in order — first one that works will be used
-_FALLBACK_MODELS = [
-    "gemini-2.0-flash",
-    "gemini-1.5-flash",
-    "gemini-1.5-flash-latest",
-    "gemini-1.5-flash-001",
+# Models to try in order — tries v1beta first (newer), then v1 (stable)
+_MODELS_TO_TRY = [
+    ("v1beta", "gemini-2.0-flash"),
+    ("v1beta", "gemini-2.0-flash-exp"),
+    ("v1",     "gemini-1.5-flash"),
+    ("v1",     "gemini-1.5-flash-latest"),
+    ("v1",     "gemini-pro"),
 ]
+
+BASE_URL = "https://generativelanguage.googleapis.com"
+
+
+def _call_gemini_rest(api_key: str, api_version: str, model: str, prompt: str) -> dict:
+    """Make a direct REST call to the Gemini API — bypasses all SDK routing issues."""
+    url = f"{BASE_URL}/{api_version}/models/{model}:generateContent"
+    payload = {
+        "contents": [
+            {"parts": [{"text": prompt}]}
+        ],
+        "generationConfig": {
+            "maxOutputTokens": 1024,
+            "temperature": 0.8,
+        }
+    }
+    resp = httpx.post(
+        url,
+        params={"key": api_key},
+        json=payload,
+        headers={"Content-Type": "application/json"},
+        timeout=30.0,
+    )
+    resp.raise_for_status()
+    data = resp.json()
+    # Extract text from Gemini REST response shape
+    text = (
+        data.get("candidates", [{}])[0]
+        .get("content", {})
+        .get("parts", [{}])[0]
+        .get("text", "")
+    )
+    return {"text": text, "raw": data}
 
 
 def _sync_generate_text(prompt: str, model: str | None = None, max_tokens: int = 1024) -> dict:
-    """Call Gemini API. Auto-selects the best available model if the default fails."""
+    """Try each (api_version, model) combo until one works."""
     api_key = os.getenv("GEMINI_API_KEY")
 
     if not api_key:
         logger.warning("GEMINI_API_KEY is not set")
-        return {"text": "Error: GEMINI_API_KEY is not configured on the server.", "raw": {"dev": True}}
+        return {"text": "Error: GEMINI_API_KEY is not configured on the server.", "raw": {}}
 
-    if not _HAVE_GENAI:
-        logger.warning("google-genai SDK not installed")
-        return {"text": "Error: google-genai SDK not installed.", "raw": {"dev": True}}
-
-    # Build the list of models to attempt
-    env_model = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
-    preferred = model or env_model
-    models_to_try = [preferred] + [m for m in _FALLBACK_MODELS if m != preferred]
-
-    # Use default client — no explicit api_version, SDK routes correctly per model
-    client = genai.Client(api_key=api_key)
+    # Build attempt list — honour env override / caller preference first
+    preferred_model = model or os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+    attempts = [(v, preferred_model)] + [
+        (v, m) for v, m in _MODELS_TO_TRY if m != preferred_model
+    ]
 
     last_error = None
-    for model_name in models_to_try:
+    for api_version, model_name in attempts:
         try:
-            logger.info("Trying Gemini model: %s", model_name)
-            response = client.models.generate_content(
-                model=model_name,
-                contents=prompt,
-            )
-            text = response.text if hasattr(response, "text") else str(response)
-            logger.info("Success with model: %s", model_name)
-            return {"text": text, "raw": str(response)}
-        except Exception as exc:
-            logger.warning("Model %s failed: %s", model_name, exc)
+            logger.info("Trying %s/%s", api_version, model_name)
+            result = _call_gemini_rest(api_key, api_version, model_name, prompt)
+            if result.get("text"):
+                logger.info("Success with %s/%s", api_version, model_name)
+                return result
+        except httpx.HTTPStatusError as exc:
+            status = exc.response.status_code
+            logger.warning("%s/%s → HTTP %s: %s", api_version, model_name, status, exc.response.text[:200])
             last_error = exc
-            continue  # try next model
+            if status in (400, 403):
+                # Key / permission issue — no point retrying same key with other models
+                break
+            continue
+        except Exception as exc:
+            logger.warning("%s/%s → %s", api_version, model_name, exc)
+            last_error = exc
+            continue
 
-    # All models failed
-    logger.exception("All Gemini models failed. Last error: %s", last_error)
     return {
-        "text": f"Gemini error (all models tried): {last_error}",
+        "text": f"Gemini error: {last_error}. Please check your GEMINI_API_KEY and try again.",
         "raw": {"error": str(last_error)},
     }
 
